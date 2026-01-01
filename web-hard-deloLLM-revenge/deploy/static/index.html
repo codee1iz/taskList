@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Дело №47-Б. Государственная измена - веб-игра" />
+  <meta name="theme-color" content="#2a1f18" />
+  <title>Дело №47-Б. Государственная измена</title>
+  <link rel="stylesheet" href="/static/styles.css" />
+</head>
+<body>
+  <div id="preloader" class="preloader">
+    <div class="preloader-content">
+      <div class="preloader-text">
+        <div class="preloader-title">КОМИТЕТ ГОСУДАРСТВЕННОЙ БЕЗОПАСНОСТИ СССР</div>
+        <div class="preloader-subtitle">Инициализация системы...</div>
+        <div class="preloader-loader">
+          <div class="preloader-bar"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="app-container">
+    <div class="background-desk"></div>
+    
+    <div id="start-screen" class="screen start-screen">
+      <div class="start-content">
+        <div class="case-main-block">
+          <div class="case-number">ДЕЛО № 47-Б</div>
+          <h1 class="case-title">ГОСУДАРСТВЕННАЯ ИЗМЕНА</h1>
+          <p class="case-description">
+            Задержанный доставлен в кабинет для последовательного допроса.
+            Все реплики автоматически заносятся в протокол.
+          </p>
+        </div>
+
+        <div class="case-card">
+          <div class="case-card-content">
+            <div class="case-card-header">
+              <span class="case-card-label">ДОСЬЕ</span>
+              <span class="case-card-status">СОВ. СЕКРЕТНО</span>
+            </div>
+            <div class="case-card-body">
+              <div class="case-info-row">
+                <span class="case-info-label">Статус:</span>
+                <span class="case-info-value">Допрос не начат</span>
+              </div>
+              <div class="case-info-row">
+                <span class="case-info-label">Классификация:</span>
+                <span class="case-info-value">Особой важности</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <button id="start-interrogation-btn" class="cta-button">
+          <span class="cta-icon">▶</span>
+          <span class="cta-text">НАЧАТЬ ДОПРОС</span>
+        </button>
+      </div>
+    </div>
+
+    <div id="interrogation-screen" class="screen interrogation-screen hidden">
+      <div class="interrogation-layout">
+        <div class="protocol-panel">
+          <header class="protocol-header">
+            <h2 class="protocol-title">ПРОТОКОЛ ДОПРОСА</h2>
+            <div class="protocol-meta">
+              <span class="protocol-status">Запись ведётся</span>
+            </div>
+          </header>
+
+          <div class="protocol-body-wrapper">
+            <div id="chat-body" class="protocol-body" aria-live="polite">
+            </div>
+          </div>
+
+          <form id="chat-form" class="protocol-input-wrapper" autocomplete="off">
+            <div class="protocol-input-container">
+              <input
+                id="chat-input"
+                type="text"
+                name="message"
+                placeholder="Ваш вопрос к задержанному..."
+                maxlength="800"
+                autocomplete="off"
+                required
+                disabled
+              />
+              <button type="submit" class="protocol-submit-btn" id="send-btn" disabled>
+                <span class="submit-btn-text">ЗАДАТЬ ВОПРОС</span>
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <aside class="case-sidebar">
+          <div class="sidebar-card">
+            <div class="sidebar-card-header">
+              <div class="sidebar-card-number">ДЕЛО № 47-Б</div>
+              <div class="sidebar-card-title">ГОСУДАРСТВЕННАЯ ИЗМЕНА</div>
+            </div>
+            
+            <div class="sidebar-card-body">
+              <div class="sidebar-status">
+                <span class="status-label">Статус:</span>
+                <span class="status-badge status-secret">СОВ. СЕКРЕТНО</span>
+              </div>
+              
+              <div class="sidebar-tags">
+                <span class="sidebar-tag">КГБ СССР</span>
+                <span class="sidebar-tag">Кабинет допроса</span>
+                <span class="sidebar-tag">Особой важности</span>
+              </div>
+
+              <div class="sidebar-description">
+                Задержанный доставлен в кабинет для последовательного допроса.
+                Все реплики автоматически заносятся в протокол.
+              </div>
+            </div>
+          </div>
+
+          <div class="sidebar-photo-card">
+            <div class="sidebar-photo">
+              <img src="/static/img/delo.png" alt="Задержанный" />
+            </div>
+          </div>
+
+          <button id="collapse-interrogation-btn" class="collapse-btn hidden">
+            <span class="collapse-btn-icon">◀</span>
+            <span class="collapse-btn-text">Вернуться</span>
+          </button>
+        </aside>
+      </div>
+    </div>
+  </div>
+
+  <script src="/static/app.js"></script>
+  <script>
+    const preloader = document.getElementById('preloader');
+    
+    function hidePreloader() {
+      if (preloader) {
+        preloader.classList.add('hidden');
+        setTimeout(() => {
+          if (preloader.parentNode) {
+            preloader.parentNode.removeChild(preloader);
+          }
+        }, 600);
+      }
+    }
+    
+    window.addEventListener('load', function() {
+      setTimeout(hidePreloader, 500);
+    });
+    
+    if (document.readyState === 'complete') {
+      setTimeout(hidePreloader, 500);
+    }
+  </script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+version: '3.8'
+
+services:
+  web-hard-delollm:
+    build:
+      context: ..
+      dockerfile: deploy/Dockerfile
+    container_name: web-hard-delollm
+    ports:
+      - "8000:8000"
+    environment:
+      - PYTHONUNBUFFERED=1
+    restart: unless-stopped
+    networks:
+      - web-hard-delollm-network
+
+networks:
+  web-hard-delollm-network:
+    driver: bridge

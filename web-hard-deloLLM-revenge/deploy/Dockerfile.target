@@ -1,0 +1,65 @@
+FROM ubuntu:22.04
+
+ENV DEBIAN_FRONTEND=noninteractive
+
+RUN apt-get update && apt-get install -y \
+    openssh-server \
+    python3 \
+    libcap2-bin \
+    net-tools \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN useradd -m -s /bin/bash target && \
+    echo "target:password123" | chpasswd && \
+    mkdir -p /home/target/.ssh && \
+    chmod 700 /home/target/.ssh && \
+    chown target:target /home/target/.ssh
+
+RUN mkdir -p /var/run/sshd && \
+    ssh-keygen -A && \
+    echo "PermitRootLogin no" >> /etc/ssh/sshd_config && \
+    echo "PasswordAuthentication no" >> /etc/ssh/sshd_config && \
+    echo "PubkeyAuthentication yes" >> /etc/ssh/sshd_config && \
+    echo "AuthorizedKeysFile .ssh/authorized_keys" >> /etc/ssh/sshd_config && \
+    echo "AllowUsers target" >> /etc/ssh/sshd_config && \
+    echo "StrictModes no" >> /etc/ssh/sshd_config
+
+RUN setcap cap_setuid+ep /usr/bin/python3.10
+
+RUN echo "vka{CHTO_ZA_PIZDEC_I_RESHIL}" > /root/flag.txt && \
+    chmod 400 /root/flag.txt
+
+RUN echo '#!/bin/bash\n\
+mkdir -p /var/run/sshd\n\
+ip addr add 192.168.90.10/24 dev eth0 2>/dev/null || true\n\
+sleep 5\n\
+for i in {1..60}; do\n\
+    if [ -f /tmp/keys/web_public_key.txt ] && [ -s /tmp/keys/web_public_key.txt ]; then\n\
+        cat /tmp/keys/web_public_key.txt > /home/target/.ssh/authorized_keys\n\
+        chmod 600 /home/target/.ssh/authorized_keys\n\
+        chown -R target:target /home/target/.ssh\n\
+        break\n\
+    fi\n\
+    sleep 1\n\
+done\n\
+/usr/sbin/sshd -D &\n\
+SSHD_PID=$!\n\
+while true; do\n\
+    if [ -f /tmp/keys/web_public_key.txt ] && [ -s /tmp/keys/web_public_key.txt ]; then\n\
+        if [ ! -f /home/target/.ssh/authorized_keys ] || [ "$(cat /tmp/keys/web_public_key.txt)" != "$(cat /home/target/.ssh/authorized_keys)" ]; then\n\
+            cat /tmp/keys/web_public_key.txt > /home/target/.ssh/authorized_keys\n\
+            chmod 600 /home/target/.ssh/authorized_keys\n\
+            chown -R target:target /home/target/.ssh\n\
+        fi\n\
+    fi\n\
+    if ! kill -0 $SSHD_PID 2>/dev/null; then\n\
+        /usr/sbin/sshd -D &\n\
+        SSHD_PID=$!\n\
+    fi\n\
+    sleep 10\n\
+done' > /entrypoint.sh && \
+    chmod +x /entrypoint.sh
+
+EXPOSE 22
+
+ENTRYPOINT ["/entrypoint.sh"]

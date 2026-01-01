@@ -1,0 +1,17 @@
+services:
+    panteleon_web:
+        container_name: panteleon_web
+        build: .
+        ports:
+          - "9876:5000"
+        volumes:
+          - ./videos:/app/videos
+        environment:
+          - FLASK_ENV=production
+        restart: unless-stopped
+        networks:
+          - panteleon_net
+networks:
+    panteleon_net:
+
+

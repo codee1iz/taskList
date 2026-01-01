@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  web-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    container_name: ssti-web-app
+    ports:
+      - "8000:8000"
+    networks:
+      internal-network:
+        ipv4_address: 192.168.90.5
+    volumes:
+      - ./app:/app/app:ro
+      - ./static:/app/static:ro
+      - shared-keys:/tmp/keys
+    cap_add:
+      - NET_ADMIN
+
+  target-server:
+    build:
+      context: .
+      dockerfile: Dockerfile.target
+    container_name: target-server-ctf
+    ports:
+    - "2222:22"
+    networks:
+      internal-network:
+        ipv4_address: 192.168.90.10
+    volumes:
+      - shared-keys:/tmp/keys:ro
+    cap_add:
+      - NET_ADMIN
+
+networks:
+  internal-network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 192.168.90.0/24
+
+volumes:
+  shared-keys:
