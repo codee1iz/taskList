@@ -19,7 +19,7 @@
 ```
 http://[HOST]:[PORT]
 ```
-![image](./images/image)
+![image](./images/image.png)
 
 ## Этап 1: Обнаружение SSTI
 
@@ -119,5 +119,6 @@ cat /root/flag.txt
 ```text
 vka{CHTO_ZA_PIZDEC_I_RESHIL}
 ```
+
 
 ---
