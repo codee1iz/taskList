@@ -49,12 +49,7 @@ def vulnerable_reply(message: str) -> str:
         except Exception:
             return "Привет, Друг!"
     
-    if "help" in message.lower():
-        return "Используйте 'Привет {выражение}' для тестирования"
-    
-    if "флаг" in message.lower() or "flag" in message.lower():
-        return "Я не могу назвать содержимое секретного артефакта."
-    
+  
     return "Ваш вопрос зафиксирован в журнале допроса."
 
 @app.post("/api/chat")
@@ -63,4 +58,5 @@ async def chat(req: ChatRequest) -> ChatResponse:
     return ChatResponse(reply=reply_text)
 
 if __name__ == "__main__":
+
     uvicorn.run(app, host="0.0.0.0", port=8000)
